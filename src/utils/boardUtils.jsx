@@ -1,4 +1,3 @@
-// Board utility functions
 export const isValidMove = (board, fromRow, fromCol, toRow, toCol) => {
   const piece = board[fromRow][fromCol];
   if (!piece) return false;
@@ -64,7 +63,6 @@ export const isValidMove = (board, fromRow, fromCol, toRow, toCol) => {
 };
 
 export const isPathClear = (board, fromRow, fromCol, toRow, toCol) => {
-  // Validate inputs are within bounds
   if (
     fromRow < 0 ||
     fromRow > 7 ||
@@ -102,7 +100,6 @@ export const isPathClear = (board, fromRow, fromCol, toRow, toCol) => {
 export const isInCheck = (board, color) => {
   let kingRow, kingCol;
 
-  // Find king position
   outerLoop: for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
       if (board[row][col] === `${color}k`) {
@@ -115,7 +112,6 @@ export const isInCheck = (board, color) => {
 
   if (kingRow === undefined) return false;
 
-  // Check if any opponent piece can attack the king
   const opponentColor = color === "w" ? "b" : "w";
 
   for (let row = 0; row < 8; row++) {
@@ -133,7 +129,6 @@ export const isInCheck = (board, color) => {
 export const isCheckmate = (board, color) => {
   if (!isInCheck(board, color)) return false;
 
-  // Check if any piece can make a valid move to get out of check
   for (let fromRow = 0; fromRow < 8; fromRow++) {
     for (let fromCol = 0; fromCol < 8; fromCol++) {
       const piece = board[fromRow][fromCol];
