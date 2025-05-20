@@ -1,4 +1,3 @@
-// FEN utility functions
 export const generateFEN = (board, activeColor) => {
   const mapPiece = (piece) => {
     if (!piece) return "";
@@ -28,18 +27,15 @@ export const generateFEN = (board, activeColor) => {
     return fenRow;
   });
 
-  // Adding dummy values for castling rights, en passant square, halfmove clock, and fullmove number
   return `${fenRows.join("/")} ${activeColor} KQkq - 0 1`;
 };
 
 export const parseFEN = (fenString) => {
   if (!fenString) return null;
 
-  // Split FEN string to get board position
   const parts = fenString.split(" ");
   const position = parts[0];
 
-  // Convert FEN position to board state
   const rows = position.split("/");
   const board = [];
 
@@ -48,7 +44,6 @@ export const parseFEN = (fenString) => {
     for (let i = 0; i < row.length; i++) {
       const char = row[i];
       if (isNaN(parseInt(char))) {
-        // It's a piece
         const color = char === char.toUpperCase() ? "w" : "b";
         let pieceType = char.toLowerCase();
         switch (pieceType) {
@@ -75,7 +70,6 @@ export const parseFEN = (fenString) => {
         }
         boardRow.push(color + pieceType);
       } else {
-        // It's a number (empty squares)
         const emptyCount = parseInt(char);
         for (let j = 0; j < emptyCount; j++) {
           boardRow.push("");
@@ -93,7 +87,6 @@ export const validateFEN = (fenString) => {
     throw new Error("FEN string cannot be empty");
   }
 
-  // Basic FEN validation
   const fenParts = fenString.split(" ");
   if (fenParts.length < 4) {
     throw new Error("FEN string must have at least 4 parts");
@@ -105,14 +98,13 @@ export const validateFEN = (fenString) => {
     throw new Error("FEN board must have 8 rows");
   }
 
-  // Validate each row
   for (const row of rows) {
     let sum = 0;
     for (const char of row) {
       if (isNaN(parseInt(char))) {
-        sum++; // It's a piece
+        sum++; 
       } else {
-        sum += parseInt(char); // It's a number of empty squares
+        sum += parseInt(char); 
       }
     }
     if (sum !== 8) {
@@ -120,7 +112,6 @@ export const validateFEN = (fenString) => {
     }
   }
 
-  // Validate turn
   const turn = fenParts[1];
   if (turn !== "w" && turn !== "b") {
     throw new Error("Turn must be 'w' or 'b'");
