@@ -1,5 +1,3 @@
-// src/components/Sidebar/Settings.jsx
-import React from "react";
 import { useGameContext } from "../../context/GameContext";
 import { useChessGame } from "../../hooks/useChessGame";
 
@@ -21,6 +19,47 @@ const Settings = () => {
   } = useGameContext();
 
   const { handleTimeControlChange } = useChessGame();
+
+  const difficultyToValue = (level) => {
+    switch (level) {
+      case "easy":
+        return 1;
+      case "normal":
+        return 2;
+      case "hard":
+        return 3;
+      default:
+        return 2;
+    }
+  };
+
+  const valueToDifficulty = (value) => {
+    switch (parseInt(value)) {
+      case 1:
+        return "easy";
+      case 2:
+        return "normal";
+      case 3:
+        return "hard";
+      default:
+        return "normal";
+    }
+  };
+
+  const handleDifficultyChange = (e) => {
+    setDifficultyLevel(valueToDifficulty(e.target.value));
+  };
+
+  const sliderValue = difficultyToValue(difficultyLevel);
+  const percentage = ((sliderValue - 1) / 2) * 100;
+  // eslint-disable-next-line no-unused-vars
+  const sliderStyle = {
+    background: `linear-gradient(to right, ${
+      isDarkMode ? "#3b82f6" : "#2563eb"
+    } 0%, ${isDarkMode ? "#3b82f6" : "#2563eb"} ${percentage}%, ${
+      isDarkMode ? "#374151" : "#e5e7eb"
+    } ${percentage}%, ${isDarkMode ? "#374151" : "#e5e7eb"} 100%)`,
+  };
 
   return (
     <div
@@ -52,19 +91,45 @@ const Settings = () => {
 
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Difficulty</label>
-        <select
-          className={`w-full px-3 py-2 border rounded-md ${
-            isDarkMode
-              ? "bg-gray-700 border-gray-600 text-white"
-              : "bg-white border-gray-300"
-          }`}
-          value={difficultyLevel}
-          onChange={(e) => setDifficultyLevel(e.target.value)}
-        >
-          <option value="easy">Easy</option>
-          <option value="normal">Normal</option>
-          <option value="hard">Hard</option>
-        </select>
+        <div className="flex items-center justify-between mb-1">
+          <span
+            className={`text-xs ${
+              sliderValue === 1 ? "font-bold text-blue-500" : ""
+            }`}
+          >
+            Easy
+          </span>
+          <span
+            className={`text-xs ${
+              sliderValue === 2 ? "font-bold text-blue-500" : ""
+            }`}
+          >
+            Normal
+          </span>
+          <span
+            className={`text-xs ${
+              sliderValue === 3 ? "font-bold text-blue-500" : ""
+            }`}
+          >
+            Hard
+          </span>
+        </div>
+        <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div
+            className="absolute top-0 left-0 h-full bg-blue-500 transition-all duration-300 ease-in-out"
+            style={{ width: `${percentage}%` }}
+          ></div>
+        </div>
+        <input
+          type="range"
+          min="1"
+          max="3"
+          step="1"
+          value={sliderValue}
+          onChange={handleDifficultyChange}
+          className="w-full h-2 absolute opacity-0 cursor-pointer -mt-2"
+          style={{ touchAction: "none" }}
+        />
       </div>
 
       <div className="mb-4">
