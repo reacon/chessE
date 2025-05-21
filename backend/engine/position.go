@@ -386,9 +386,9 @@ func (pos *Position) DoMove(move Move) (isValid bool) {
 	moveType := move.MoveType()
 	flag := move.Flag()
 
-	if err := pos.ValidateBoardState(); err != nil {
-		fmt.Printf("Board state invalid before move: %v\n", err)
-	}
+	// if from >= 64 || pos.Squares[from].Color >= NoColor || pos.Squares[from].Type >= NoType {
+	// 	return false
+	// }
 
 	// Create a new State object to save the state of the irreversible aspects
 	// of the position before making the current move.
@@ -550,6 +550,10 @@ func (pos *Position) UndoMove(move Move) {
 	to := move.ToSq()
 	moveType := move.MoveType()
 	flag := move.Flag()
+
+	// if from >= 64 || pos.Squares[from].Color >= NoColor || pos.Squares[from].Type >= NoType {
+	// 	return
+	// }
 
 	// Put the moving piece back on it's orgin square
 	pos.putPiece(state.Moved.Type, state.Moved.Color, from)

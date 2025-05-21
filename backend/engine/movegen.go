@@ -28,7 +28,7 @@ func genMoves(pos *Position) (moves MoveList) {
 	genPawnMoves(pos, &moves)
 
 	// Generate castling moves.
-	genCastlingMoves(pos, &moves)
+	// genCastlingMoves(pos, &moves)
 
 	return moves
 }

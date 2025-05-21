@@ -236,15 +236,15 @@ func (search *Search) Search() Move {
 		totalTime += endTime.Milliseconds()
 
 		bestMove = pvLine.GetPVMove()
-		nps := uint64(float64(search.totalNodes*1000) / float64(totalTime))
+		// nps := uint64(float64(search.totalNodes*1000) / float64(totalTime))
 
-		fmt.Printf(
-			"info depth %d score %s nodes %d nps %d time %d pv %s\n",
-			depth, getMateOrCPScore(score),
-			search.totalNodes, nps,
-			totalTime,
-			pvLine,
-		)
+		// fmt.Printf(
+		// 	"info depth %d score %s nodes %d nps %d time %d pv %s\n",
+		// 	depth, getMateOrCPScore(score),
+		// 	search.totalNodes, nps,
+		// 	totalTime,
+		// 	pvLine,
+		// )
 	}
 
 	return bestMove
@@ -460,7 +460,7 @@ func (search *Search) negamax(depth int8, ply uint8, alpha, beta int16, pvLine *
 
 		// Add validation before making move
 		fromSq := move.FromSq()
-		if fromSq >= 64 || search.Pos.Squares[fromSq].Color >= NoColor {
+		if fromSq >= 64 || search.Pos.Squares[fromSq].Color >= NoColor || search.Pos.Squares[fromSq].Type >= NoType {
 			continue // Skip invalid moves
 		}
 
